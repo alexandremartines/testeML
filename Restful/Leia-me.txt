@@ -1,0 +1,26 @@
+Desenvolvimento:
+- Java
+- Restful
+- JPA
+- MySQL
+
+Segue as urls para teste:
+
+- Incluir usuário: http://localhost:8787/Restful/usuario/inserir/12313123123
+	Inserir o facebookId no final da url (12313123123)
+
+- Listar usuários: http://localhost:8787/Restful/usuario/listarTodos/0
+	Inserir o limit no final da url (0)
+
+- Excluir usuário: http://localhost:8787/Restful/usuario/excluir/12313123123
+	Inserir o facebookId no final da url (12313123123)
+
+
+Para testar bastar criar um banco de dados MySQL com o nome do database "webservice".
+Não há necessidade de criar a tabela, como fiz em JPA, criará sozinha os dados.
+
+
+Segue o passo a passo para testar o projeto:
+
+1. Criar um database MySQL com o nome "webservice";
+2. Baixar o projeto.
