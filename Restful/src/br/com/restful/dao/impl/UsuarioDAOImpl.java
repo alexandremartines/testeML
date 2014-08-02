@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
+import org.apache.log4j.Logger;
+
 import br.com.restful.dao.UsuarioDAO;
 import br.com.restful.model.Usuario;
 
@@ -16,6 +18,7 @@ import br.com.restful.model.Usuario;
 public class UsuarioDAOImpl implements UsuarioDAO {
 
 	private EntityManager em;
+	Logger logger = Logger.getLogger(UsuarioDAOImpl.class);
 
 	public UsuarioDAOImpl(EntityManager em){
 		this.em = em;
@@ -28,12 +31,13 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		
 		try{
 			if (!"".equals(limit) && limit != 0){
+				logger.info("Listando " + limit + " usuário(s)");
 				return  (ArrayList<Usuario>) q.setMaxResults(limit).getResultList();
 			}
+			logger.info("Listando todos os usuários");
 			return  (ArrayList<Usuario>) q.getResultList();
 		}catch (Exception e){
-			System.out.println("Erro ao listar os usuários: " + e);
-			e.printStackTrace();
+			logger.info("Erro ao listar os usuários: " + e);
 			return new ArrayList<Usuario>();
 		}
 	}
@@ -43,7 +47,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		em.getTransaction().begin();
 		em.persist(usuario);
 		em.getTransaction().commit();
-		
+		logger.info("Usuário inserido com sucesso: facebookId = " + usuario.getFacebookId());
 		return listarUsuario(usuario.getFacebookId());
 	}
 
@@ -52,7 +56,7 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		em.getTransaction().begin();
 		em.remove(usuario);
 		em.getTransaction().commit();
-		
+		logger.info("Usuário excluido com sucesso: facebookId = " + usuario.getFacebookId());
 		return "Usuário excluído.";
 	}
 
@@ -61,10 +65,10 @@ public class UsuarioDAOImpl implements UsuarioDAO {
 		Query q = em.createQuery("FROM Usuario WHERE facebookId = :facebookId");
 		q.setParameter("facebookId", facebookId);
 		try{
+			logger.info("Listando o usuário");
 			return  (Usuario) q.getSingleResult();
 		}catch (Exception e){
-			System.out.println("Erro ao listar o usuário: " + e);
-			e.printStackTrace();
+			logger.info("Erro ao listar o usuario:  "+ e);
 			return null;
 		}
 	}
